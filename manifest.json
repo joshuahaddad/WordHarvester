@@ -1,0 +1,16 @@
+{
+  "name": "Word Harvester",
+  "description": "Chrome webapp used to collect word data for NLP",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons":{
+    "16": "16.png"
+  },
+  "permissions": ["contextMenus", "tabs", "scripting", "storage", "activeTab"],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
