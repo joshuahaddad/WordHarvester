@@ -1,7 +1,5 @@
 // Get the abbreviation from background.js, inject into html and store
 chrome.runtime.sendMessage({greeting: 'abbrev_req'}, function(abbrev){
-  // TODO: Change the HTML so the abbreviation shows up in page
-
   // If response is a string we can process it
   if(typeof(abbrev) == 'string'){
       // Log that we have a response
@@ -13,10 +11,14 @@ chrome.runtime.sendMessage({greeting: 'abbrev_req'}, function(abbrev){
     });
   }
 
+  // TODO: Change the HTML so the abbreviation shows up in page
+  var title = document.getElementById("Title");
+  title.innerText = "Define Abbreviation: " + abbrev;
 });
 
 // Get user input
 s.addEventListener("click", async () => {
+
   // If abbrev variable does not have a definition, an error occurred
   let abbrev = await chrome.storage.local.get('abbreviation').abbreviation;
   if(abbrev == undefined){
