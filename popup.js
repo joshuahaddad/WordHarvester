@@ -35,7 +35,3 @@ s.addEventListener("click", async () => {
   chrome.runtime.sendMessage({abbrev: response.abbreviation,
                               definition: user_input});
 });
-
-function getInput(message) {
-  console.log(message);
-}
