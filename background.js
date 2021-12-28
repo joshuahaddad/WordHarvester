@@ -8,17 +8,28 @@ chrome.contextMenus.create({
 
 chrome.contextMenus.onClicked.addListener(function(info, tab) {
     if (info.menuItemId == "text_selection") {
-      // Store the word that is attempting to be defined
-      console.log(info.selectionText);
-
-      // Send message to popup.js context script
-      chrome.runtime.sendMessage({greeting: "test"}, function(response){
-        console.log(response.farewell)
-      });
-      // chrome.storage.sync.set({info.selectionText});
 
       // Open the popup menu in a new tab
       chrome.tabs.create({'url': chrome.runtime.getURL('popup.html')}, function(tab) {
       });
+
+      // Await tab open and send the word that is trying to be defined to popup.js
+      chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+        if(request['greeting'] == 'abbrev_req'){
+          let abbrev = info.selectionText;
+          console.log('Sending abbreviation: ' + abbrev);
+          sendResponse(abbrev);
+        }
+      });
+
+      // Process the definition
+      chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+        // Format:
+        console.log(request);
+        console.log(sender);
+        console.log(sendResponse);
+      });
+
+
     }
 });
