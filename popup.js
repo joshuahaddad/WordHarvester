@@ -2,6 +2,10 @@
 chrome.runtime.sendMessage({greeting: 'abbrev_req'}, function(abbrev){
   // If response is a string we can process it
   if(typeof(abbrev) == 'string'){
+      // Change the HTML
+      var title = document.getElementById("Title");
+      title.innerText = "Define Abbreviation: " + abbrev;
+
       // Log that we have a response
       console.log("Abbreviation request fulfilled: " + abbrev);
 
@@ -10,26 +14,26 @@ chrome.runtime.sendMessage({greeting: 'abbrev_req'}, function(abbrev){
           console.log('Abbreviation stored as: ' + abbrev);
     });
   }
-
-  // TODO: Change the HTML so the abbreviation shows up in page
-  var title = document.getElementById("Title");
-  title.innerText = "Define Abbreviation: " + abbrev;
 });
 
 // Get user input
 s.addEventListener("click", async () => {
 
   // If abbrev variable does not have a definition, an error occurred
-  let abbrev = await chrome.storage.local.get('abbreviation').abbreviation;
-  if(abbrev == undefined){
+  let response = await chrome.storage.local.get('abbreviation');
+  if(response.abbreviation == undefined){
+    console.log("Abbreviation is undefined");
     return;
   }
+
+  console.log("Loaded abbreviation: " + response.abbreviation)
 
   // Get the definition of the word entered by the user
   let user_input = document.getElementById("q").value;
 
   // Send this value to background.js
-  chrome.runtime.sendMessage({abbrev: abbrev, definition: user_input});
+  chrome.runtime.sendMessage({abbrev: response.abbreviation,
+                              definition: user_input});
 });
 
 function getInput(message) {
