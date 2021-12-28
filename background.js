@@ -1,5 +1,3 @@
-
-
 chrome.contextMenus.create({
   "title":"Define %s",
   "contexts":["selection"],
